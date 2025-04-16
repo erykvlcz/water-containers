@@ -13,12 +13,24 @@ public class WaterContainer implements Serializable {
         this.maxCapacity = 0;
     }
 
-    public WaterContainer(String name, double maxCapacity, double waterLevel) {
+    private WaterContainer(String name, double maxCapacity, double waterLevel) {
         this.name = name;
         this.maxCapacity = maxCapacity;
         this.waterLevel = waterLevel;
     }
 
+    public static WaterContainer create(String name, double maxCapacity, double waterLevel){
+        if(maxCapacity <= 0 ){
+            throw  new RuntimeException("Max capacity should be above 0");
+        }
+        if(waterLevel < 0){
+            throw new RuntimeException("Water level should be 0 or above");
+        }
+        if(waterLevel > maxCapacity) {
+            throw new RuntimeException("Water level should be same as maxCapacity or below");
+        }
+        return new WaterContainer(name, maxCapacity, waterLevel);
+    }
 
 
     public String getName() {
