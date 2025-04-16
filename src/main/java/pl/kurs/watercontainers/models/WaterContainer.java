@@ -3,13 +3,29 @@ package pl.kurs.watercontainers.models;
 import java.util.Objects;
 
 public class WaterContainer {
-    private String name;
-    private double maxCapacity;
+    private final String name;
+    private final double maxCapacity;
     private double waterLevel;
 
     public WaterContainer(String name, double maxCapacity, double waterLevel) {
         this.name = name;
         this.maxCapacity = maxCapacity;
+        this.waterLevel = waterLevel;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public double getWaterLevel() {
+        return waterLevel;
+    }
+
+    public void setWaterLevel(double waterLevel) {
         this.waterLevel = waterLevel;
     }
 
