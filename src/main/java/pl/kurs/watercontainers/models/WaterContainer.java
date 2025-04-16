@@ -1,17 +1,25 @@
 package pl.kurs.watercontainers.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class WaterContainer {
+public class WaterContainer implements Serializable {
     private final String name;
     private final double maxCapacity;
     private double waterLevel;
+
+    public WaterContainer() {
+        this.name = null;
+        this.maxCapacity = 0;
+    }
 
     public WaterContainer(String name, double maxCapacity, double waterLevel) {
         this.name = name;
         this.maxCapacity = maxCapacity;
         this.waterLevel = waterLevel;
     }
+
+
 
     public String getName() {
         return name;
