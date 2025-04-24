@@ -32,6 +32,16 @@ public class WaterContainer implements Serializable {
         return new WaterContainer(name, maxCapacity, waterLevel);
     }
 
+    public void addWater(double value){
+        if(value <= 0){
+            throw new IllegalArgumentException("Value should be above zero");
+        }
+        if(value + waterLevel > maxCapacity){
+            throw new IllegalArgumentException("Value + actual water level can not be higher than max capacity");
+        }
+        waterLevel += value;
+    }
+
 
     public String getName() {
         return name;
