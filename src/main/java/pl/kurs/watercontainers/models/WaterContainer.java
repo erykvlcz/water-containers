@@ -42,6 +42,16 @@ public class WaterContainer implements Serializable {
         waterLevel += value;
     }
 
+    public void pourOutWater(double value){
+        if(value <= 0){
+            throw new IllegalArgumentException("Value should be above zero");
+        }
+        if(waterLevel - value < 0){
+            throw new IllegalArgumentException("Too much water to pour out");
+        }
+        waterLevel -= value;
+    }
+
 
     public String getName() {
         return name;
