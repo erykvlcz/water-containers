@@ -32,6 +32,44 @@ public class WaterContainer implements Serializable {
         return new WaterContainer(name, maxCapacity, waterLevel);
     }
 
+    public void addWater(double value){
+        checkWaterValueInput(value);
+        checkIfAddingIsPossible(value);
+        waterLevel += value;
+    }
+
+    public void pourOutWater(double value){
+        checkWaterValueInput(value);
+        checkIfRemovingIsPossible(value);
+
+        waterLevel -= value;
+    }
+
+    public void pourWaterFrom(WaterContainer sourceContainer, double value){
+        checkIfAddingIsPossible(value);
+        sourceContainer.pourOutWater(value);
+        addWater(value);
+    }
+
+    private void checkWaterValueInput(double value){
+        if(value <= 0){
+            throw new IllegalArgumentException("Value should be above zero");
+        }
+    }
+
+    private void checkIfAddingIsPossible(double value){
+        if(value + waterLevel > maxCapacity){
+            throw new IllegalArgumentException("Value + actual water level can not be higher than max capacity");
+        }
+
+    }
+
+    private void checkIfRemovingIsPossible(double value){
+        if(waterLevel - value < 0){
+            throw new IllegalArgumentException("Too much water to pour out");
+        }
+    }
+
 
     public String getName() {
         return name;
@@ -48,6 +86,8 @@ public class WaterContainer implements Serializable {
     public void setWaterLevel(double waterLevel) {
         this.waterLevel = waterLevel;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
