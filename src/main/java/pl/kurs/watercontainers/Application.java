@@ -12,9 +12,11 @@ public class Application {
 
         WaterContainer beczka = WaterContainer.create("Beczka", 300, 100);
         WaterContainer mazuer = WaterContainer.create("Mauzer", 1000, 800);
+        WaterContainer cysterna = WaterContainer.create("Cysterna", 100_000, 30_000);
 
         WaterContainerService service = new WaterContainerService();
         WaterContainer maxContainer = service.findHighestLevelWaterContainer(List.of(beczka, mazuer));
+        System.out.println(service.findTheMostFilledWaterContainer(List.of(beczka, mazuer, cysterna)));
 
 
 

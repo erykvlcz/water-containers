@@ -21,4 +21,27 @@ public class WaterContainerService {
         }
         return max;
     }
+
+    public WaterContainer findTheMostFilledWaterContainer(List<WaterContainer> list){
+
+        WaterContainer mostFilled = null;
+        if(list.isEmpty()){
+            return null;
+        }
+
+        mostFilled = list.get(0);
+
+        for (int i = 1; i < list.size(); i++) {
+            if(getFillRatio(mostFilled) < getFillRatio(list.get(i))){
+                mostFilled = list.get(i);
+            }
+        }
+        return mostFilled;
+    }
+
+    private double getFillRatio(WaterContainer waterContainer){
+        return waterContainer.getWaterLevel() / waterContainer.getMaxCapacity();
+    }
+
+
 }
