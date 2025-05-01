@@ -2,17 +2,19 @@ package pl.kurs.watercontainers.services;
 
 import pl.kurs.watercontainers.models.WaterContainer;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WaterContainerService {
     public WaterContainer findHighestLevelWaterContainer(List<WaterContainer> list){
 
-        WaterContainer max = null;
+
         if(list.isEmpty()){
             return null;
         }
 
-        max = list.get(0);
+        WaterContainer max = list.get(0);
 
         for (int i = 1; i < list.size(); i++) {
             if(max.getWaterLevel() < list.get(i).getWaterLevel()){
@@ -24,12 +26,12 @@ public class WaterContainerService {
 
     public WaterContainer findTheMostFilledWaterContainer(List<WaterContainer> list){
 
-        WaterContainer mostFilled = null;
+
         if(list.isEmpty()){
             return null;
         }
 
-        mostFilled = list.get(0);
+        WaterContainer mostFilled = list.get(0);
 
         for (int i = 1; i < list.size(); i++) {
             if(getFillRatio(mostFilled) < getFillRatio(list.get(i))){
@@ -37,6 +39,19 @@ public class WaterContainerService {
             }
         }
         return mostFilled;
+    }
+
+    public List<WaterContainer> findEmptyContainers(List<WaterContainer> list){
+        if(list.isEmpty()){
+            return Collections.emptyList();
+        }
+        List<WaterContainer> emptyWaterContainersList = new ArrayList<>();
+        for (WaterContainer waterContainer : list) {
+            if(waterContainer.getWaterLevel() == 0){
+                emptyWaterContainersList.add(waterContainer);
+            }
+        }
+        return Collections.unmodifiableList(emptyWaterContainersList);
     }
 
     private double getFillRatio(WaterContainer waterContainer){
