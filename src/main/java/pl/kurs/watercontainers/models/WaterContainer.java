@@ -3,7 +3,7 @@ package pl.kurs.watercontainers.models;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class WaterContainer implements Serializable {
+public class WaterContainer implements Serializable, Comparable<WaterContainer> {
     private final String name;
     private final double maxCapacity;
     private double waterLevel;
@@ -109,5 +109,10 @@ public class WaterContainer implements Serializable {
                 ", maxCapacity=" + maxCapacity +
                 ", waterLevel=" + waterLevel +
                 '}';
+    }
+
+    @Override
+    public int compareTo(WaterContainer o) {
+        return Double.compare(waterLevel, o.waterLevel);
     }
 }
