@@ -7,23 +7,23 @@ public class Car implements Serializable {
     private static final long serialVersionUID = 42L;
 
 
-    private String producer;
+    private String brand;
     private String model;
     private int powerHp;
 
-    public Car(String producer, String model, int powerHp) {
-        this.producer = producer;
+    public Car(String brand, String model, int powerHp) {
+        this.brand = brand;
         this.model = model;
         this.powerHp = powerHp;
     }
 
 
-    public String getProducer() {
-        return producer;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setProducer(String producer) {
-        this.producer = producer;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getModel() {
@@ -48,18 +48,18 @@ public class Car implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Car car = (Car) o;
-        return powerHp == car.powerHp && Objects.equals(producer, car.producer) && Objects.equals(model, car.model);
+        return powerHp == car.powerHp && Objects.equals(brand, car.brand) && Objects.equals(model, car.model);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(producer, model, powerHp);
+        return Objects.hash(brand, model, powerHp);
     }
 
     @Override
     public String toString() {
         return "Car{" +
-                "producer='" + producer + '\'' +
+                "producer='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", powerHp=" + powerHp +
                 '}';
