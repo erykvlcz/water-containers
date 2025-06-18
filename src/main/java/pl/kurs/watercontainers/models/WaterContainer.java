@@ -32,23 +32,38 @@ public class WaterContainer implements Serializable, Comparable<WaterContainer> 
         return new WaterContainer(name, maxCapacity, waterLevel);
     }
 
-    public void addWater(double value){
+    public boolean addWater(double value){
         checkWaterValueInput(value);
-        checkIfAddingIsPossible(value);
+        if(!addIsPossible(value)){
+            return false;
+        }
         waterLevel += value;
+        return true;
     }
 
-    public void pourOutWater(double value){
+    public boolean pourOutWater(double value){
         checkWaterValueInput(value);
-        checkIfRemovingIsPossible(value);
-
+        if(!subtractIsPossible(value)){
+            return false;
+        }
         waterLevel -= value;
+        return true;
     }
 
-    public void pourWaterFrom(WaterContainer sourceContainer, double value){
-        checkIfAddingIsPossible(value);
-        sourceContainer.pourOutWater(value);
-        addWater(value);
+    public boolean pourWaterFrom(WaterContainer sourceContainer, double value){
+        if (sourceContainer == null) {
+            System.out.println("Source container can not be null");
+            return false;
+        }
+
+        if(!this.addIsPossible(value) || !sourceContainer.subtractIsPossible(value)){
+            return false;
+        }
+
+        boolean operation1 = sourceContainer.pourOutWater(value);
+        boolean operation2 = addWater(value);
+        return operation1 && operation2;
+
     }
 
     private void checkWaterValueInput(double value){
@@ -57,17 +72,20 @@ public class WaterContainer implements Serializable, Comparable<WaterContainer> 
         }
     }
 
-    private void checkIfAddingIsPossible(double value){
+    private boolean addIsPossible(double value){
         if(value + waterLevel > maxCapacity){
-            throw new IllegalArgumentException("Value + actual water level can not be higher than max capacity");
+            System.out.println("Value + actual water level can not be higher than max capacity");
+            return false;
         }
-
+        return true;
     }
 
-    private void checkIfRemovingIsPossible(double value){
+    private boolean subtractIsPossible(double value){
         if(waterLevel - value < 0){
-            throw new IllegalArgumentException("Too much water to pour out");
+            System.out.println("Too much water to pour out");
+            return false;
         }
+        return true;
     }
 
 
