@@ -37,4 +37,14 @@ public class Car {
     public void setPowerHp(int powerHp) {
         this.powerHp = powerHp;
     }
+
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "producer='" + producer + '\'' +
+                ", model='" + model + '\'' +
+                ", powerHp=" + powerHp +
+                '}';
+    }
 }
