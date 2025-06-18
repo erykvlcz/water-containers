@@ -14,4 +14,27 @@ public class Car {
     }
 
 
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public int getPowerHp() {
+        return powerHp;
+    }
+
+    public void setPowerHp(int powerHp) {
+        this.powerHp = powerHp;
+    }
 }
