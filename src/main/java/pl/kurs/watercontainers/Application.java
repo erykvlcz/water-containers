@@ -29,7 +29,10 @@ public class Application {
 //            e.printStackTrace();
 //        }
 
+//        beczka.addWater(10);
+//        beczka.pourOutWater(10);
 
+        beczka.pourWaterFrom(mazuer,5000);
 
     }
 }

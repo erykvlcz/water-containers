@@ -1,9 +1,15 @@
 package pl.kurs.watercontainers.models;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class WaterContainer implements Serializable, Comparable<WaterContainer> {
+    private static final long serialVersionUID = 42L;
+    private List<OperationLog> operationLogList = new ArrayList<>();
     private final String name;
     private final double maxCapacity;
     private double waterLevel;
@@ -19,11 +25,11 @@ public class WaterContainer implements Serializable, Comparable<WaterContainer> 
         this.waterLevel = waterLevel;
     }
 
-    public static WaterContainer create(String name, double maxCapacity, double waterLevel){
-        if(maxCapacity <= 0 ){
-            throw  new RuntimeException("Max capacity should be above 0");
+    public static WaterContainer create(String name, double maxCapacity, double waterLevel) {
+        if(maxCapacity <= 0) {
+            throw new RuntimeException("Max capacity should be above 0");
         }
-        if(waterLevel < 0){
+        if(waterLevel < 0) {
             throw new RuntimeException("Water level should be 0 or above");
         }
         if(waterLevel > maxCapacity) {
@@ -32,56 +38,63 @@ public class WaterContainer implements Serializable, Comparable<WaterContainer> 
         return new WaterContainer(name, maxCapacity, waterLevel);
     }
 
-    public boolean addWater(double value){
+    public void addWater(double value) {
         checkWaterValueInput(value);
-        if(!addIsPossible(value)){
-            return false;
+        boolean success;
+        if(!addIsPossible(value)) {
+            success = false;
+        } else {
+            waterLevel += value;
+            success = true;
         }
-        waterLevel += value;
-        return true;
+
+
+        operationLogList.add(new OperationLog(Timestamp.from(Instant.now()), OperationLog.OperationType.ADD, this, value, success));
+
     }
 
-    public boolean pourOutWater(double value){
+    public void pourOutWater(double value) {
         checkWaterValueInput(value);
+        boolean success;
         if(!subtractIsPossible(value)){
-            return false;
+            success = false;
+        }else {
+            waterLevel -= value;
+            success = true;
         }
-        waterLevel -= value;
-        return true;
-    }
-
-    public boolean pourWaterFrom(WaterContainer sourceContainer, double value){
-        if (sourceContainer == null) {
-            System.out.println("Source container can not be null");
-            return false;
-        }
-
-        if(!this.addIsPossible(value) || !sourceContainer.subtractIsPossible(value)){
-            return false;
-        }
-
-        boolean operation1 = sourceContainer.pourOutWater(value);
-        boolean operation2 = addWater(value);
-        return operation1 && operation2;
+        operationLogList.add(new OperationLog(Timestamp.from(Instant.now()), OperationLog.OperationType.SUBTRACT, this, value, success));
 
     }
 
-    private void checkWaterValueInput(double value){
-        if(value <= 0){
+    public void pourWaterFrom(WaterContainer sourceContainer, double value) {
+
+        if(!sourceContainer.subtractIsPossible(value) || !addIsPossible(value)){
+            boolean success = false;
+            Timestamp timestamp = Timestamp.from(Instant.now());
+            sourceContainer.operationLogList.add(new OperationLog(timestamp, OperationLog.OperationType.SUBTRACT,sourceContainer,value,success));
+            this.operationLogList.add(new OperationLog(timestamp, OperationLog.OperationType.ADD,this,value,success));
+        }else {
+            sourceContainer.pourOutWater(value);
+            addWater(value);
+        }
+    }
+
+    private void checkWaterValueInput(double value) {
+        if(value <= 0) {
             throw new IllegalArgumentException("Value should be above zero");
         }
     }
 
-    private boolean addIsPossible(double value){
-        if(value + waterLevel > maxCapacity){
+    private boolean addIsPossible(double value) {
+        if(value + waterLevel > maxCapacity) {
             System.out.println("Value + actual water level can not be higher than max capacity");
             return false;
         }
         return true;
     }
 
-    private boolean subtractIsPossible(double value){
-        if(waterLevel - value < 0){
+    private boolean subtractIsPossible(double value) {
+        if(waterLevel - value < 0) {
             System.out.println("Too much water to pour out");
             return false;
         }
